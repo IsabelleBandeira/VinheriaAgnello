@@ -3,12 +3,11 @@ from typing import List
 import requests
 import os
 from .consul_register import register as consul_register
-from model.Product import Product
-from model.ProductCreate import ProductCreate
+from app.model.Product import Product
+from app.model.ProductCreate import ProductCreate
 
 app = FastAPI()
 
-# Simple in-memory DB
 DB = {}
 next_id = 1
 
@@ -25,7 +24,6 @@ def startup_event():
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
 
 @app.get("/v1/products", response_model=List[Product])
 def get_all():

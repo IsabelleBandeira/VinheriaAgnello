@@ -1,9 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from typing import Dict, List
 from .consul_register import register as consul_register
-from model.BatchCreate import BatchCreate
-from model.ReserveRequest import ReserveRequest
-from model.Stock import Stock
+from app.model.BatchCreate import BatchCreate
+from app.model.ReserveRequest import ReserveRequest
+from app.model.Stock import Stock
 
 app = FastAPI(title="Inventory API")
 
@@ -23,7 +23,7 @@ def health():
 
 @app.get("/v1/inventory/{product_id}")
 def get_total_stock(product_id: int):
-    """Returna estoque disponível (não reservado) de um produto."""
+    """Retorna estoque disponível (não reservado) de um produto."""
     batches = INVENTORY.get(product_id, [])
     total_available = sum(b["qtd_disponivel"] for b in batches)
     return {"product_id": product_id, "total_disponivel": total_available}

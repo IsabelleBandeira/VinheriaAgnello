@@ -2,6 +2,7 @@ version: "3.8"
 services:
   consul:
     image: consul:1.15
+    container_name: consul
     command: "agent -dev -client=0.0.0.0"
     ports:
       - "8500:8500"   # HTTP UI/API
@@ -11,6 +12,7 @@ services:
 
   product:
     build: ./api-catalogo-produtos
+    container_name: product
     depends_on:
       - consul
       - inventory
@@ -25,6 +27,7 @@ services:
 
   inventory:
     build: ./api-estoque
+    container_name: inventory
     environment:
       - CONSUL_HOST=consul
       - SERVICE_PORT=80
@@ -36,3 +39,7 @@ services:
 networks:
   appnet:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
